@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
+const request = require('request')
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -23,6 +24,9 @@ app.post('/webhook', (req, res) => {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
+        let sender = webhook_event.sender.id
+        let text = evenwebhook_event.message.text
+        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         console.log(webhook_event);
         });
 
@@ -65,3 +69,27 @@ app.get('/webhook', (req, res) => {
   });
 
 app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('port')));
+
+// recommended to inject access tokens as environmental variables, e.g.
+// const token = process.env.FB_PAGE_ACCESS_TOKEN
+const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
+
+function sendTextMessage(sender, text) {
+	let messageData = { text:text }
+	
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
