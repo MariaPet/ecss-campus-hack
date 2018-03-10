@@ -26,99 +26,103 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id;
-            let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
-            console.log(webhook_event);
             if (webhook_event[0].postback){
                 console.log(webhook_event[0].postback);
             }
-            if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
-                var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
-                var longitude = webhook_event.message.attachments[0].payload.coordinates.long
-                sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-                var numberOfResultsReturned = 2;
-
-
-                //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-                request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
-                    var body = JSON.parse(body);
+            else {
+                let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
+                console.log(webhook_event);
+                
+                if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
+                    var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
+                    var longitude = webhook_event.message.attachments[0].payload.coordinates.long
+                    sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
+                    var numberOfResultsReturned = 2;
+    
+    
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-
-                    for (var i = 0; i<6; i++){
-                        sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
-                    }  
-                    // sendTextMessage(sender, {
-                    //     "content_type": "text",
-                    //     "title": "Next",
-                    //     "payload": "Next"
-                    //   });
-
-
-                    if(webhook_event.message.text === "Next")
-                    {
-                        var i = 0;
-                        sendTextMessage("tEST");
-                       while(numberOfResultsReturned >= 0)
-                       {
-                        sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
-                        numberOfResultsReturned--;
-                        i++;
-                       }
-                    }
-
-                    numberOfResultsReturned = 2;
-
-
-                    /*
-                    for (var i=0; i < body.stops.length; i++) {
-                        sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name)
-                    }
-                    */
-                })
-            }
-            else if (text.indexOf("stop") === 0) {
-                request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
-                    console.log('error:', error); // Print the error if one occurred
-                    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                    var body = JSON.parse(body)
-                    var results = "";
-                    var found = false;
-                    var search_term = text.replace("stop ", "");
-                    for (var i=0; i < body.length; i++) {
-
-                        if (body[i].label.toLowerCase().indexOf(search_term) >= 0 ) {
-                            found = true;
-                            results += JSON.stringify(body[i]);
-
-                            request('https://transportapi.com/v3/uk/bus/stop/'+ body[i].id +'/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, stop){
-                                var stop = JSON.parse(stop);
-                                var stop_info = "";
-                                for (var key in stop.departures) {
-                                    var departure_time = stop.departures[key][0].aimed_departure_time;
-                                    var operator_name = stop.departures[key][0].operator_name;
-                                    var direction = stop.departures[key][0].direction;
-                                    var line_name = stop.departures[key][0].line_name;
-                                    stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
-                                    sendTextMessage(sender, stop_info);
-
-
-                                }
-                                
-
-                            })
+                    request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
+                        var body = JSON.parse(body);
+                        //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
+    
+                        for (var i = 0; i<6; i++){
+                            sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
+                        }  
+                        // sendTextMessage(sender, {
+                        //     "content_type": "text",
+                        //     "title": "Next",
+                        //     "payload": "Next"
+                        //   });
+    
+    
+                        if(webhook_event.message.text === "Next")
+                        {
+                            var i = 0;
+                            sendTextMessage("tEST");
+                           while(numberOfResultsReturned >= 0)
+                           {
+                            sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
+                            numberOfResultsReturned--;
+                            i++;
+                           }
                         }
-                        // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
-                        //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
-                        // }
-                    }
-                    if (found === false){
-                        results = "Oh-oh I could't find any bus stops with this name ";
-                        sendTextMessage(sender, "Text received, echo: " + results);
-
-                    }
-                    
-                });
+    
+                        numberOfResultsReturned = 2;
+    
+    
+                        /*
+                        for (var i=0; i < body.stops.length; i++) {
+                            sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name)
+                        }
+                        */
+                    })
+                }
+                else if (text.indexOf("stop") === 0) {
+                    request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
+                        console.log('error:', error); // Print the error if one occurred
+                        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                        var body = JSON.parse(body)
+                        var results = "";
+                        var found = false;
+                        var search_term = text.replace("stop ", "");
+                        for (var i=0; i < body.length; i++) {
+    
+                            if (body[i].label.toLowerCase().indexOf(search_term) >= 0 ) {
+                                found = true;
+                                results += JSON.stringify(body[i]);
+    
+                                request('https://transportapi.com/v3/uk/bus/stop/'+ body[i].id +'/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, stop){
+                                    var stop = JSON.parse(stop);
+                                    var stop_info = "";
+                                    for (var key in stop.departures) {
+                                        var departure_time = stop.departures[key][0].aimed_departure_time;
+                                        var operator_name = stop.departures[key][0].operator_name;
+                                        var direction = stop.departures[key][0].direction;
+                                        var line_name = stop.departures[key][0].line_name;
+                                        stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                        sendTextMessage(sender, stop_info);
+    
+    
+                                    }
+                                    
+    
+                                })
+                            }
+                            // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
+                            //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
+                            // }
+                        }
+                        if (found === false){
+                            results = "Oh-oh I could't find any bus stops with this name ";
+                            sendTextMessage(sender, "Text received, echo: " + results);
+    
+                        }
+                        
+                    });
+                }
+                res.status(200).send('EVENT_RECEIVED');
             }
-            res.status(200).send('EVENT_RECEIVED');
+            
         });
     } 
     else {
