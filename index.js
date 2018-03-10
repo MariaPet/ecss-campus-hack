@@ -35,7 +35,7 @@ app.post('/webhook', (req, res) => {
             request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
                 console.log('error:', error); // Print the error if one occurred
                 console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                console.log(response[0].label);
+                console.log(body);
                 for (var i=0; i < body.length; i++) {
                     if (body[i].label.indexOf(text)) {
                         sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
