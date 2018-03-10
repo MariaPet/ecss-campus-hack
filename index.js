@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
 const request = require('request')
+const myFunctions = require('./functions')
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -27,6 +28,15 @@ app.post('/webhook', (req, res) => {
         let sender = webhook_event.sender.id
         let text = webhook_event.message.text
         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        
+
+
+
+        var resultJSON = myFunctions.getJSON();
+
+        console.log(resultJSON);
+
+
         console.log(webhook_event);
         });
 
