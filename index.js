@@ -2,28 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
 
-var js = require('./functions.js');
-
 const request = require('request')
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    // response = js.getBusesForStation();
-    var request = require('request');
-    request('https://transportapi.com/v3/uk/bus/stop/1980SN120405/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, body) {
-     console.log('error:', error); // Print the error if one occurred
-     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-     
-    var jsonToDisplay=JSON.parse(body)
-    final = body.replace(jsonToDisplay,"")
-     //console.log(jsonToDisplay);
-     console.log(final);
-     //console.log(response);
-     //return final;
-     res.send(body);
-    });
+    res.send('hello');
         
     }
 )
@@ -46,17 +31,21 @@ app.post('/webhook', (req, res) => {
 
         let sender = webhook_event.sender.id
         let text = webhook_event.message.text
-        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+
+        request('https://transportapi.com/v3/uk/bus/stop/1980SN120405/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         
+        var jsonToDisplay=JSON.parse(body)
+        final = body.replace(jsonToDisplay,"")
+        sendTextMessage(sender, "Text received, echo: " + jsonToDisplay.substring(0, 200))
+        });
 
 
-
-        // var resultJSON = myFunctions.getJSON();
-
-        console.log(resultJSON);
+        // sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 
 
-        console.log(webhook_event);
+        // console.log(webhook_event);
         });
 
     
