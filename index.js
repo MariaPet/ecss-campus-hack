@@ -40,7 +40,13 @@ app.post('/webhook', (req, res) => {
                     var body = JSON.parse(body)
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
-                    if(webhook_event.message.text === "Next")
+                    quickReplies.push({
+                        "content_type": "text",
+                        "title": "Next",
+                        "payload": "nextslice_5_10"
+                      });
+
+                    if(webhook_event.message.text.title === "Next")
                     {
                         var i = 0;
                         sendTextMessage("tEST");
