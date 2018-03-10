@@ -25,7 +25,7 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
         let sender = webhook_event.sender.id
-        let text = evenwebhook_event.message.text
+        let text = webhook_event.message.text
         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         console.log(webhook_event);
         });
