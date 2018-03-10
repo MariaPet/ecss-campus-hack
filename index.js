@@ -42,11 +42,7 @@ app.post('/webhook', (req, res) => {
 
 
                     let quickReplies = slicedProducts.map(product => {
-                        return {
-                          "content_type": "text",
-                          "title": product.title,
-                          "payload": product.title
-                        };
+                        
                     });
 
 
@@ -57,7 +53,11 @@ app.post('/webhook', (req, res) => {
                         "payload": "Next"
                       });
 
-                      sendTextMessage(quickReplies);
+                      sendTextMessage(return {
+                        "content_type": "text",
+                        "title": Next1,
+                        "payload": Next
+                      };);
 
                     if(webhook_event.message.quick_reply.payload === "Next")
                     {
