@@ -43,6 +43,7 @@ app.get('/webhook', (req, res) => {
       
     // Parse the query params
     let mode = req.query['hub.mode'];
+    console.log( req.query['hub.verify_token'])
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
       
