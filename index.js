@@ -28,6 +28,9 @@ app.post('/webhook', (req, res) => {
             let sender = webhook_event.sender.id;
             let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
             console.log(webhook_event);
+            if (webhook_event[0].postback){
+                console.log(webhook_event[0].postback);
+            }
             if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                 var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                 var longitude = webhook_event.message.attachments[0].payload.coordinates.long
@@ -94,7 +97,7 @@ app.post('/webhook', (req, res) => {
                                     var operator_name = stop.departures[key][0].operator_name;
                                     var direction = stop.departures[key][0].direction;
                                     var line_name = stop.departures[key][0].line_name;
-                                    stop_info = operator_name + " " + line_name + "\n Bus stop: "  +stop.name + "\n Direction: " + direction + " \n Departure time: "+ departure_time
+                                    stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
                                     sendTextMessage(sender, stop_info);
 
 
