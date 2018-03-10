@@ -42,19 +42,13 @@ app.post('/webhook', (req, res) => {
 
 
 
-                    quickReplies.push({
+                      sendTextMessage({
                         "content_type": "text",
                         "title": "Next",
                         "payload": "Next"
                       });
 
-                      sendTextMessage({
-                        "content_type": "text",
-                        "title": Next1,
-                        "payload": Next
-                      });
-
-                    if(webhook_event.message.quick_reply.payload === "Next")
+                    if(webhook_event.message.text === "Next")
                     {
                         var i = 0;
                         sendTextMessage("tEST");
