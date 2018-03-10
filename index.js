@@ -40,9 +40,9 @@ app.post('/webhook', (req, res) => {
                     var body = JSON.parse(body)
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
-                    body.stops.sort(function(a,b) {return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);} );
-                    for (var i = 0; i<5; i++){
-                        sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance);
+                    var results =body.stops.sort(function(a,b) {return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);} );
+                    for (var i = 0; i<6; i++){
+                        sendTextMessage(sender, results[i].name+" "+results[i].distance + "meters");
                     }  
                     // sendTextMessage(sender, {
                     //     "content_type": "text",
