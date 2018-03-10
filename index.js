@@ -32,24 +32,20 @@ app.post('/webhook', (req, res) => {
         let sender = webhook_event.sender.id
         let text = webhook_event.message.text
 
-        request('https://transportapi.com/v3/uk/bus/stop/1980SN120405/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, body) {
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        
-        var jsonToDisplay=JSON.stringify(body)
-        final = body.replace(jsonToDisplay,"")
-        sendTextMessage(sender, "Text received, echo: " + jsonToDisplay.substring(0, 200))
+            request('https://transportapi.com/v3/uk/bus/stop/1980SN120405/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, body) {
+                console.log('error:', error); // Print the error if one occurred
+                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                
+                for (var i=0; i < body.length; i++) {
+                    if (body[i].label.indexOf(text)) {
+                        sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
+                    }
+                }
+                // var jsonToDisplay=JSON.stringify(body)
+                // final = body.replace(jsonToDisplay,"")
+                // sendTextMessage(sender, "Text received, echo: " + jsonToDisplay.substring(0, 200))
+            });
         });
-
-
-        // sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-
-
-        // console.log(webhook_event);
-        });
-
-    
-        // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
     } else {
         // Returns a '404 Not Found' if event is not from a page subscription
