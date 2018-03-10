@@ -40,13 +40,16 @@ app.post('/webhook', (req, res) => {
                     var body = JSON.parse(body)
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
+                    body.stops.sort(function(a,b) {return (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0);} );
+                    for (var i = 0; i<5; i++){
+                        sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance);
+                    }  
+                    // sendTextMessage(sender, {
+                    //     "content_type": "text",
+                    //     "title": "Next",
+                    //     "payload": "Next"
+                    //   });
 
-
-                      sendTextMessage({
-                        "content_type": "text",
-                        "title": "Next",
-                        "payload": "Next"
-                      });
 
                     if(webhook_event.message.text === "Next")
                     {
