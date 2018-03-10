@@ -53,11 +53,11 @@ app.post('/webhook', (req, res) => {
                         "payload": "Next"
                       });
 
-                      sendTextMessage(return {
+                      sendTextMessage({
                         "content_type": "text",
                         "title": Next1,
                         "payload": Next
-                      };);
+                      });
 
                     if(webhook_event.message.quick_reply.payload === "Next")
                     {
