@@ -40,11 +40,24 @@ app.post('/webhook', (req, res) => {
                     var body = JSON.parse(body)
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
+
+                    let quickReplies = slicedProducts.map(product => {
+                        
+                    });
+
+
+
                     quickReplies.push({
                         "content_type": "text",
                         "title": "Next",
                         "payload": "Next"
                       });
+
+                      sendTextMessage(return {
+                        "content_type": "text",
+                        "title": Next1,
+                        "payload": Next
+                      };);
 
                     if(webhook_event.message.quick_reply.payload === "Next")
                     {
