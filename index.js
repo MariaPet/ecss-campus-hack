@@ -41,23 +41,11 @@ app.post('/webhook', (req, res) => {
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
 
-                    let quickReplies = slicedProducts.map(product => {
-                        
-                    });
-
-
-
-                    quickReplies.push({
-                        "content_type": "text",
-                        "title": "Next",
-                        "payload": "Next"
-                      });
-
-                      sendTextMessage(return {
+                      sendTextMessage({
                         "content_type": "text",
                         "title": Next1,
                         "payload": Next
-                      };);
+                      });
 
                     if(webhook_event.message.quick_reply.payload === "Next")
                     {
@@ -65,7 +53,7 @@ app.post('/webhook', (req, res) => {
                         sendTextMessage("tEST");
                        while(numberOfResultsReturned >= 0)
                        {
-                        sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
+                        //sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
                         numberOfResultsReturned--;
                         i++;
                        }
