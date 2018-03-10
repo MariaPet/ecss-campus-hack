@@ -1,12 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
+var js = require('./functions.js');
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-        res.send('Hello');
+    // response = js.getBusesForStation();
+    var request = require('request');
+    request('https://transportapi.com/v3/uk/bus/stop/1980SN120405/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, body) {
+     console.log('error:', error); // Print the error if one occurred
+     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+     
+    var jsonToDisplay=JSON.parse(body)
+    final = body.replace(jsonToDisplay,"")
+     //console.log(jsonToDisplay);
+     console.log(final);
+     //console.log(response);
+     //return final;
+     res.send(body);
+    });
+        
     }
 )
 
@@ -23,9 +38,10 @@ app.post('/webhook', (req, res) => {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
+        //console.log(webhook_event);
         });
 
+    
         // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
     } else {
