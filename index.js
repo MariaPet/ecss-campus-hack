@@ -26,8 +26,8 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id;
-            if (webhook_event[0].postback){
-                console.log(webhook_event[0].postback);
+            if (webhook_event.postback){
+                console.log(webhook_event.postback);
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
