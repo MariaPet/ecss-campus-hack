@@ -51,7 +51,7 @@ app.post('/webhook', (req, res) => {
 
 
 
-        var resultJSON = myFunctions.getJSON();
+        // var resultJSON = myFunctions.getJSON();
 
         console.log(resultJSON);
 
