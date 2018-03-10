@@ -57,6 +57,8 @@ app.post('/webhook', (req, res) => {
                         "payload": "Next"
                       });
 
+                      sendTextMessage(quickReplies);
+
                     if(webhook_event.message.quick_reply.payload === "Next")
                     {
                         var i = 0;
