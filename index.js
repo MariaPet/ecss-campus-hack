@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
+
 var js = require('./functions.js');
+
+const request = require('request')
 
 app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -38,7 +41,22 @@ app.post('/webhook', (req, res) => {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
+
         //console.log(webhook_event);
+
+        let sender = webhook_event.sender.id
+        let text = webhook_event.message.text
+        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        
+
+
+
+        var resultJSON = myFunctions.getJSON();
+
+        console.log(resultJSON);
+
+
+        console.log(webhook_event);
         });
 
     
@@ -56,9 +74,10 @@ app.get('/webhook', (req, res) => {
 
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = "hugs_n_bugs"
-      
+    console.log( "hellooooo")
     // Parse the query params
     let mode = req.query['hub.mode'];
+    console.log( req.query['hub.verify_token'])
     let token = req.query['hub.verify_token'];
     let challenge = req.query['hub.challenge'];
       
@@ -80,3 +99,27 @@ app.get('/webhook', (req, res) => {
   });
 
 app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('port')));
+
+// recommended to inject access tokens as environmental variables, e.g.
+// const token = process.env.FB_PAGE_ACCESS_TOKEN
+const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
+
+function sendTextMessage(sender, text) {
+	let messageData = { text:text }
+	
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
