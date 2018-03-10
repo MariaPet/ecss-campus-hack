@@ -32,6 +32,13 @@ app.post('/webhook', (req, res) => {
                 var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                 var longitude = webhook_event.message.attachments[0].payload.coordinates.long
                 sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
+                request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
+                    var body = JSON.parse(body)
+                    sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
+                    for (var i=0; i < body.stops.length; i++) {
+                        sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name)
+                    }
+                })
             }
             else {
                 request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
