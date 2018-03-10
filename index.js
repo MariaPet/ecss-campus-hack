@@ -37,7 +37,7 @@ app.post('/webhook', (req, res) => {
                 console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                 var body = JSON.parse(body)
                 for (var i=0; i < body.length; i++) {
-                    if (body[i].label.indexOf(text)) {
+                    if (body[i].label.indexOf(text) >= 0) {
                         sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
                     }
                 }
