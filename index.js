@@ -41,7 +41,7 @@ app.post('/webhook', (req, res) => {
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
                     for (var i = 0; i<6; i++){
-                        sendTextMessage(sender, body.stops[i].name+" "+body.stops[[i].distance + " meters");
+                        sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
                     }  
                     // sendTextMessage(sender, {
                     //     "content_type": "text",
