@@ -74,12 +74,14 @@ app.post('/webhook', (req, res) => {
                     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                     var body = JSON.parse(body)
                     var results = "";
+                    var found = false;
                     for (var i=0; i < body.length; i++) {
 
                         if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) >= 0 ) {
+                            found = true;
                             results += JSON.stringify(body[i]);
                         }
-                        else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) < 0 ){
+                        if (found === false){
                             results = "Oh-oh I could't find any bus stops with this name ";
                         }
                         sendTextMessage(sender, "Text received, echo: " + results);
