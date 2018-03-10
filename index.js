@@ -25,9 +25,9 @@ app.post('/webhook', (req, res) => {
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
-            let sender = webhook_event.sender.id
-            let text = webhook_event.message.text
-            console.log(webhook_event)
+            let sender = webhook_event.sender.id;
+            let text = webhook_event.message.text.toLowerCase();
+            console.log(webhook_event);
             if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                 var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                 var longitude = webhook_event.message.attachments[0].payload.coordinates.long
@@ -70,7 +70,7 @@ app.post('/webhook', (req, res) => {
                     */
                 })
             }
-            else {
+            else if (text.indexOf("Stop") === 0) {
                 request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
                     console.log('error:', error); // Print the error if one occurred
                     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
