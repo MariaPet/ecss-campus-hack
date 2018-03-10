@@ -47,7 +47,7 @@ app.post('/webhook', (req, res) => {
                         "payload": "Next"
                       });
 
-                    if( webhook_event.message.title === "Next1")
+                    if( webhook_event.message.text === "Next1")
                     {
                         var i = 0;
                         sendTextMessage("tEST");
