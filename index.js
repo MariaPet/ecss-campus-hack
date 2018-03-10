@@ -27,7 +27,7 @@ app.post('/webhook', (req, res) => {
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id
             let text = webhook_event.message.text
-
+            console.log(webhook_event)
             if (webhook_event.message.attachments && webhook_event.message.attachments.type === "location") {
                 var latitude = payload.coordinates.lat
                 var longitude = payload.coordinates.long
