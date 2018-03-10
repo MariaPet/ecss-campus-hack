@@ -85,6 +85,23 @@ app.post('/webhook', (req, res) => {
                         if (body[i].label.toLowerCase().indexOf(search_term) >= 0 ) {
                             found = true;
                             results += JSON.stringify(body[i]);
+
+                            request('https://transportapi.com/v3/uk/bus/stop/'+ body[i].id +'/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, stop){
+                                var stop = JSON.parse(stop);
+                                var stop_info = "";
+                                for (var key in stop.departures) {
+                                    var departure_time = stop.departures[key][0].aimed_departure_time;
+                                    var operator_name = stop.departures[key][0].operator_name;
+                                    var direction = stop.departures[key][0].direction;
+                                    var line_name = stop.departures[key][0].line_name;
+                                    stop_info = operator_name + " " + line_name + " " + direction +" "+ departure_time
+                                    sendTextMessage(sender, stop_info);
+
+
+                                }
+                                
+
+                            })
                         }
                         // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
                         //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
