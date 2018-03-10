@@ -31,7 +31,7 @@ app.post('/webhook', (req, res) => {
             if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                 var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                 var longitude = webhook_event.message.attachments[0].payload.coordinates.long
-
+                sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
                 var numberOfResultsReturned = 2;
 
 
@@ -43,6 +43,7 @@ app.post('/webhook', (req, res) => {
                     if(webhook_event.message.quick_reply === "Next")
                     {
                         var i = 0;
+                        sendTextMessage("tEST");
                        while(numberOfResultsReturned >= 0)
                        {
                         sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
