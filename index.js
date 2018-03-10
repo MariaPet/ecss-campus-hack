@@ -26,7 +26,7 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id;
-            let text = webhook_event.message.text.toLowerCase();
+            let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
             console.log(webhook_event);
             if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                 var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
