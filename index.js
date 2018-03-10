@@ -22,36 +22,36 @@ app.post('/webhook', (req, res) => {
 
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function(entry) {
-
         // Gets the message. entry.messaging is an array, but 
         // will only ever contain one message, so we get index 0
-        let webhook_event = entry.messaging[0];
+            let webhook_event = entry.messaging[0];
+            let sender = webhook_event.sender.id
+            let text = webhook_event.message.text
 
-        //console.log(webhook_event);
-
-        let sender = webhook_event.sender.id
-        let text = webhook_event.message.text
-
-            request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
-                console.log('error:', error); // Print the error if one occurred
-                console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-                var body = JSON.parse(body)
-                for (var i=0; i < body.length; i++) {
-                    if (body[i].label.indexOf(text) >= 0) {
-                        sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
+            if (webhook_event.message.attachments && webhook_event.message.attachments.type === "location") {
+                var latitude = payload.coordinates.lat
+                var longitude = payload.coordinates.long
+                sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
+            }
+            else {
+                request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
+                    console.log('error:', error); // Print the error if one occurred
+                    console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+                    var body = JSON.parse(body)
+                    for (var i=0; i < body.length; i++) {
+                        if (body[i].label.indexOf(text) >= 0) {
+                            sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
+                        }
                     }
-                }
-                // var jsonToDisplay=JSON.stringify(body)
-                // final = body.replace(jsonToDisplay,"")
-                // sendTextMessage(sender, "Text received, echo: " + jsonToDisplay.substring(0, 200))
-            });
+                });
+            }
+            res.status(200).send('EVENT_RECEIVED');
         });
-        res.status(200).send('EVENT_RECEIVED');
-    } else {
+    } 
+    else {
         // Returns a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
-    }
-  
+    } 
 });
 
 // Adds support for GET requests to our webhook
