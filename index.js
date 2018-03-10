@@ -43,11 +43,11 @@ app.post('/webhook', (req, res) => {
 
                       sendTextMessage({
                         "content_type": "text",
-                        "title": Next1,
-                        "payload": Next
+                        "title": "Next1",
+                        "payload": "Next"
                       });
 
-                    if(webhook_event.message.quick_reply.payload === "Next")
+                    if(webhook_event.message.quick_reply.payload === "Next" || webhook_event.message.title === "Next1")
                     {
                         var i = 0;
                         sendTextMessage("tEST");
