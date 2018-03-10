@@ -45,10 +45,21 @@ app.post('/webhook', (req, res) => {
                     console.log('error:', error); // Print the error if one occurred
                     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                     var body = JSON.parse(body)
+                    var results = "";
                     for (var i=0; i < body.length; i++) {
-                        if (body[i].label.indexOf(text) >= 0) {
-                            sendTextMessage(sender, "Text received, echo: " + JSON.stringify(body[i]))
+
+                        if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) >= 0 ) {
+                            results += JSON.stringify(body[i]);
                         }
+                        else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) < 0 ){
+                            results = "Oh-oh I could't find any bus stops with this name ";
+                        }
+                        sendTextMessage(sender, "Text received, echo: " + results);
+                        // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
+                        //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
+                        // }
+
+                        
                     }
                 });
             }
