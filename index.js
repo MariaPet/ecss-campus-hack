@@ -94,7 +94,7 @@ app.post('/webhook', (req, res) => {
                                     var operator_name = stop.departures[key][0].operator_name;
                                     var direction = stop.departures[key][0].direction;
                                     var line_name = stop.departures[key][0].line_name;
-                                    stop_info = operator_name + " " + line_name + "\n From:"  +stop.name + " \n Direction:" + direction + " \n Departure time:"+ departure_time
+                                    stop_info = operator_name + " " + line_name + "\n Bus stop: "  +stop.name + "\n Direction: " + direction + " \n Departure time: "+ departure_time
                                     sendTextMessage(sender, stop_info);
 
 
@@ -109,10 +109,11 @@ app.post('/webhook', (req, res) => {
                     }
                     if (found === false){
                         results = "Oh-oh I could't find any bus stops with this name ";
+                        sendTextMessage(sender, "Text received, echo: " + results);
+
                     }
                     
-                    sendTextMessage(sender, "Text received, echo: " + results);
-                                    });
+                });
             }
             res.status(200).send('EVENT_RECEIVED');
         });
