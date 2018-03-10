@@ -41,6 +41,21 @@ app.post('/webhook', (req, res) => {
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
 
 
+<<<<<<< HEAD
+=======
+                    let quickReplies = slicedProducts.map(product => {
+                        
+                    });
+
+
+
+                    quickReplies.push({
+                        "content_type": "text",
+                        "title": "Next",
+                        "payload": "Next"
+                      });
+
+>>>>>>> f5c4189bc35f36ce044546176cbf804215f0748e
                       sendTextMessage({
                         "content_type": "text",
                         "title": Next1,
@@ -82,16 +97,16 @@ app.post('/webhook', (req, res) => {
                             found = true;
                             results += JSON.stringify(body[i]);
                         }
-                        if (found === false){
-                            results = "Oh-oh I could't find any bus stops with this name ";
-                        }
-                        sendTextMessage(sender, "Text received, echo: " + results);
                         // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
                         //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
                         // }
-
-                        
                     }
+                    if (found === false){
+                        results = "Oh-oh I could't find any bus stops with this name ";
+                    }
+                    
+                    sendTextMessage(sender, "Text received, echo: " + results);
+                    
                 });
             }
             res.status(200).send('EVENT_RECEIVED');
