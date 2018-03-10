@@ -81,16 +81,16 @@ app.post('/webhook', (req, res) => {
                             found = true;
                             results += JSON.stringify(body[i]);
                         }
-                        if (found === false){
-                            results = "Oh-oh I could't find any bus stops with this name ";
-                        }
-                        sendTextMessage(sender, "Text received, echo: " + results);
                         // else if (body[i].label.toLowerCase().indexOf(text.toLowerCase()) > 1) {
                         //     sendTextMessage(sender, "Great! I found several stops with that name, which one do you want?" + JSON.stringify(body[i]))
                         // }
-
-                        
                     }
+                    if (found === false){
+                        results = "Oh-oh I could't find any bus stops with this name ";
+                    }
+                    
+                    sendTextMessage(sender, "Text received, echo: " + results);
+                    
                 });
             }
             res.status(200).send('EVENT_RECEIVED');
