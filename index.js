@@ -218,17 +218,17 @@ function sendTextMessage(sender, text, location, help, stops) {
             })
         }
       
-        messageData = {
-            text: "test",
-            attachement : {
-                type: "template",
-                payload: {
-                    template_type: "list",
-                    top_element_style: "compact",
-                    elements: elements
-                }
-            }
-        }
+        // messageData = {
+        //     text: "test",
+        //     attachement : {
+        //         type: "template",
+        //         payload: {
+        //             template_type: "list",
+        //             top_element_style: "compact",
+        //             elements: elements
+        //         }
+        //     }
+        // }
         json= {
 			recipient: {id:sender},
 			message: messageData,
