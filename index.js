@@ -55,7 +55,7 @@ app.post('/webhook', (req, res) => {
     
                     
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-                    request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
+                    request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=a6e4faa8&app_key=b1d1af31b0b5411705c84380b8a0e8d6&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
                         var body = JSON.parse(body);
                         //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
                         sendTextMessage(sender, body.stops.splice(0,4), null,null, "stops");
@@ -84,7 +84,7 @@ app.post('/webhook', (req, res) => {
                                 found = true;
                                 results += JSON.stringify(body[i]);
     
-                                request('https://transportapi.com/v3/uk/bus/stop/'+ body[i].id +'/live.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&group=route&nextbuses=yes', function (error, response, stop){
+                                request('https://transportapi.com/v3/uk/bus/stop/'+ body[i].id +'/live.json?app_id=a6e4faa8&app_key=b1d1af31b0b5411705c84380b8a0e8d6&group=route&nextbuses=yes', function (error, response, stop){
                                     var stop = JSON.parse(stop);
                                     var stop_info = "";
                                     for (var key in stop.departures) {
