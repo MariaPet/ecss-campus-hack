@@ -214,6 +214,7 @@ function sendTextMessage(sender, text, location, help, stops) {
         }
       
         messageData = {
+            text: "test",
             attachement : {
                 type: "template",
                 payload: {
