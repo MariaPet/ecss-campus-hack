@@ -28,7 +28,7 @@ app.post('/webhook', (req, res) => {
             let sender = webhook_event.sender.id;
             if (webhook_event.postback){
                 console.log(webhook_event.postback.title);
-                sendTextMessage(sender,"Hello and welcome to BusSoton Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.")
+                sendTextMessage(sender,"Hello and welcome to BusSoton Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.", true)
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
@@ -114,7 +114,7 @@ app.post('/webhook', (req, res) => {
                                                 var operator_name = stop.departures[key][j].operator_name;
                                                 var direction = stop.departures[key][j].direction;
                                                 var line_name = stop.departures[key][j].line_name;
-                                                stop_info = ":oncoming_bus:"+ operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                                stop_info = ":oncoming_bus: "+ operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
                                                 sendTextMessage(sender, stop_info);
                                             }
                                         }
@@ -123,7 +123,7 @@ app.post('/webhook', (req, res) => {
                                             var operator_name = stop.departures[key][0].operator_name;
                                             var direction = stop.departures[key][0].direction;
                                             var line_name = stop.departures[key][0].line_name;
-                                            stop_info = ":oncoming_bus:"+operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                            stop_info = ":oncoming_bus: "+operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
                                             sendTextMessage(sender, stop_info);
                                         }
                                     }
@@ -189,17 +189,31 @@ app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
 const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
 
-function sendTextMessage(sender, text) {
-	let messageData = { text:text }
-	
+function sendTextMessage(sender, text, quickReply) {
+    let messageData = { text:text }
+	if (quickReply) {
+        json= {
+			recipient: {id:sender},
+			message: messageData,
+		}
+    }
+    else {
+        messageData.quick_replies = []
+        messageData.quick_replies.push({
+            content_type: "text",
+            title: "Stop",
+            payload: "<POSTBACK_PAYLOAD>"
+        });
+        json= {
+			recipient: {id:sender},
+			message: messageData,
+		}
+    }
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
 		method: 'POST',
-		json: {
-			recipient: {id:sender},
-			message: messageData,
-		}
+		json: json
 	}, function(error, response, body) {
 		if (error) {
 			console.log('Error sending messages: ', error)
