@@ -203,13 +203,13 @@ function sendTextMessage(sender, text, location, help, stops) {
         console.log(text)
         for (var i=0; i < text.length; i++) {
             elements.push({
-                title: text[i].name+" "+text[i].distance,
-                buttons: [
-                    {
-                        title: "Stop "+ text[i].name,
+                title: text[i].name+" "+text[i].distance
+                // buttons: [
+                //     {
+                //         title: "Stop "+ text[i].name,
 
-                    }
-                ]
+                //     }
+                // ]
             })
         }
       
