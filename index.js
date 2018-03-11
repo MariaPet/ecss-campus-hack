@@ -29,6 +29,7 @@ app.post('/webhook', (req, res) => {
             if (webhook_event.postback && webhook_event.postback.payload === "Start"){
                 console.log(webhook_event.postback.title);
                 sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.", true)
+                res.status(200).send('EVENT_RECEIVED');
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
