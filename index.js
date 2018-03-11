@@ -28,6 +28,7 @@ app.post('/webhook', (req, res) => {
             let sender = webhook_event.sender.id;
             if (webhook_event.postback){
                 console.log(webhook_event.postback.title);
+                sendTextMessage(sender,"Hello and welcome to BusSoton Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.")
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
@@ -85,9 +86,15 @@ app.post('/webhook', (req, res) => {
                         var results = "";
                         var found = false;
                         var search_term = text.replace("stop ", "");
+                        var bus = null;
+                        if (search_term.indexOf("bus") >= 0) {
+                            bus = search_term.split(" ").splice(-1,1);
+                        }
+                        
                         for (var i=0; i < body.length; i++) {
     
                             if (body[i].label.toLowerCase().indexOf(search_term) >= 0 ) {
+                                
                                 found = true;
                                 results += JSON.stringify(body[i]);
     
@@ -95,14 +102,30 @@ app.post('/webhook', (req, res) => {
                                     var stop = JSON.parse(stop);
                                     var stop_info = "";
                                     for (var key in stop.departures) {
-                                        var departure_time = stop.departures[key][0].aimed_departure_time;
-                                        var operator_name = stop.departures[key][0].operator_name;
-                                        var direction = stop.departures[key][0].direction;
-                                        var line_name = stop.departures[key][0].line_name;
-                                        stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
-                                        sendTextMessage(sender, stop_info);
-    
-    
+                                        if (bus && key !== bus) {
+                                            break;
+                                        }
+                                        else if (bus && key === bus) {
+                                            for (var j =0; j < stop.departures[key][0].length; j++) {
+                                                if (j >= 3) {
+                                                    break;
+                                                }
+                                                var departure_time = stop.departures[key][j].aimed_departure_time;
+                                                var operator_name = stop.departures[key][j].operator_name;
+                                                var direction = stop.departures[key][j].direction;
+                                                var line_name = stop.departures[key][j].line_name;
+                                                stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                                sendTextMessage(sender, stop_info);
+                                            }
+                                        }
+                                        else {
+                                            var departure_time = stop.departures[key][0].aimed_departure_time;
+                                            var operator_name = stop.departures[key][0].operator_name;
+                                            var direction = stop.departures[key][0].direction;
+                                            var line_name = stop.departures[key][0].line_name;
+                                            stop_info = operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                            sendTextMessage(sender, stop_info);
+                                        }
                                     }
                                     
     
