@@ -79,7 +79,7 @@ app.post('/webhook', (req, res) => {
                         
                         for (var i=0; i < body.length; i++) {
     
-                            if (body[i].label.toLowerCase().indexOf(search_term) >= 0 ) {
+                            if (body[i].label.toLowerCase().indexOf(search_term.replace('...','')) >= 0 ) {
                                 
                                 found = true;
                                 results += JSON.stringify(body[i]);
