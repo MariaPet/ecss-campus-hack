@@ -40,7 +40,7 @@ app.post('/webhook', (req, res) => {
                     sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
                     var numberOfResultsReturned = 2;
     
-    
+                    
                     //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
                     request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
                         var body = JSON.parse(body);
@@ -123,7 +123,9 @@ app.post('/webhook', (req, res) => {
                                             var operator_name = stop.departures[key][0].operator_name;
                                             var direction = stop.departures[key][0].direction;
                                             var line_name = stop.departures[key][0].line_name;
-                                            stop_info = ":oncoming_bus: "+operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+
+                                            stop_info = ":oncoming_bus: "+operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + "\n Departure time:"+ departure_time
+
                                             sendTextMessage(sender, stop_info);
                                         }
                                     }
