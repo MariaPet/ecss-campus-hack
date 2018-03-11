@@ -27,7 +27,7 @@ app.post('/webhook', (req, res) => {
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id;
             if (webhook_event.postback){
-                console.log(webhook_event.postback);
+                console.log(webhook_event.postback.title);
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
