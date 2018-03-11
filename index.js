@@ -28,13 +28,15 @@ app.post('/webhook', (req, res) => {
             let sender = webhook_event.sender.id;
             if (webhook_event.postback && webhook_event.postback.payload === "Start"){
                 console.log(webhook_event.postback.title);
-                sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.", true)
+                sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.","location", "help")
                 res.status(200).send('EVENT_RECEIVED');
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
                 console.log(webhook_event);
-                
+                if (text === "help") {
+                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location using the '+' button below.", "location")
+                }
                 if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                     var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                     var longitude = webhook_event.message.attachments[0].payload.coordinates.long
@@ -191,21 +193,31 @@ app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
 const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
 
-function sendTextMessage(sender, text, quickReply) {
+function sendTextMessage(sender, text, location, help) {
     let messageData = { text:text }
-	if (!quickReply) {
+	if (!location && !help) {
         json= {
 			recipient: {id:sender},
 			message: messageData,
 		}
     }
-    else {
+    else if(location || help){
         messageData.quick_replies = []
-        messageData.quick_replies.push({
-            content_type: "location"
-            // title: "Stop",
-            // payload: "<POSTBACK_PAYLOAD>"
-        });
+        if (location) {
+            messageData.quick_replies.push({
+                content_type: "location"
+                // title: "Stop",
+                // payload: "<POSTBACK_PAYLOAD>"
+            });
+        }
+        if (help) {
+            messageData.quick_replies.push({
+                content_type: "text",
+                title: "Help",
+                payload: "<POSTBACK_PAYLOAD>"
+            });
+        }
+        
         json= {
 			recipient: {id:sender},
 			message: messageData,
