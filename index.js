@@ -79,7 +79,7 @@ app.post('/webhook', (req, res) => {
                     })
                 }
                 else if (text.indexOf("stop") === 0) {
-                    request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-04/stops.json', function (error, response, body) {
+                    request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-11/stops.json', function (error, response, body) {
                         console.log('error:', error); // Print the error if one occurred
                         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
                         var body = JSON.parse(body)
