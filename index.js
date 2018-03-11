@@ -47,7 +47,7 @@ app.post('/webhook', (req, res) => {
                     request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
                         var body = JSON.parse(body);
                         //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-                        sendTextMessage(sender, body.stops.splice(0,6), null,null, "stops");
+                        sendTextMessage(sender, body.stops.splice(0,3), null,null, "stops");
                         // for (var i = 0; i<6; i++){
                         //     sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
                         // }  
