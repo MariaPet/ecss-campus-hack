@@ -28,7 +28,7 @@ app.post('/webhook', (req, res) => {
             let sender = webhook_event.sender.id;
             if (webhook_event.postback && webhook_event.postback.payload === "Start"){
                 console.log(webhook_event.postback.title);
-                sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.","location", "help")
+                sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or lookup the closest bus stops by sending your location. Reply with 'Help' for more instructions.","location", "help")
                 res.status(200).send('EVENT_RECEIVED');
             }
             else {
@@ -46,7 +46,7 @@ app.post('/webhook', (req, res) => {
                 
                 console.log(webhook_event);
                 if (text === "help") {
-                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific bus stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
+                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific bus stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge', and optionally followed by the specific bus line eg: \"Stop Giddy Bridge Bus U1C\". To find the stops closest to you you can send your location.", "location")
                 }
                 if (webhook_event.message && webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                     var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
