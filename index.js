@@ -207,7 +207,8 @@ function sendTextMessage(sender, text, location, help, stops) {
             messageData.quick_replies.push({
                 content_type: "text",
                 title: text[i].name+" "+text[i].distance,
-                payload: "Stop " + text[i].name
+                payload: "<POSTBACK_PAYLOAD>"
+                // payload: "Stop " + text[i].name
                 // title: text[i].name+" "+text[i].distance
                 // buttons: [
                 //     {
