@@ -96,7 +96,7 @@ app.post('/webhook', (req, res) => {
                                             continue;
                                         }
                                         else if (bus && key.toLowerCase() === bus) {
-                                            for (var j =0; j < stop.departures[key][0].length; j++) {
+                                            for (var j =0; j < stop.departures[key].length; j++) {
                                                 if (j >= 3) {
                                                     break;
                                                 }
