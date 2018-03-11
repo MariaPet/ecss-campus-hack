@@ -46,7 +46,7 @@ app.post('/webhook', (req, res) => {
                 
                 console.log(webhook_event);
                 if (text === "help") {
-                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
+                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific bus stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
                 }
                 if (webhook_event.message && webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                     var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
@@ -100,7 +100,7 @@ app.post('/webhook', (req, res) => {
                                                 var operator_name = stop.departures[key][j].operator_name;
                                                 var direction = stop.departures[key][j].direction;
                                                 var line_name = stop.departures[key][j].line_name;
-                                                stop_info = "🚌"+operator_name + " " + line_name + "🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
+                                                stop_info = "🚌 "+operator_name + " " + line_name + " 🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
                                                 sendTextMessage(sender, stop_info);
                                             }
                                         }
@@ -109,7 +109,7 @@ app.post('/webhook', (req, res) => {
                                             var operator_name = stop.departures[key][0].operator_name;
                                             var direction = stop.departures[key][0].direction;
                                             var line_name = stop.departures[key][0].line_name;
-                                            stop_info = "🚌"+operator_name + " " + line_name + "🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
+                                            stop_info = "🚌 "+operator_name + " " + line_name + " 🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
                                             sendTextMessage(sender, stop_info);
 
                                         }
@@ -219,7 +219,7 @@ function sendTextMessage(sender, text, location, help, stops) {
                 // title: text[i].name+" "+text[i].distance,
                 // payload: "<POSTBACK_PAYLOAD>"
                 // payload: "Stop " + text[i].name
-                title: text[i].name+" "+text[i].distance + "meters",
+                title: text[i].name+" "+text[i].distance + " meters away",
                 buttons: [
                     {
                         title: "Stop "+ text[i].name,
