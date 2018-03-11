@@ -170,7 +170,7 @@ function sendTextMessage(sender, text, location, help, stops) {
     console.log(location + " and " + help + " stops " +stops)
     console.log("text: " +text)
     let messageData = { text:text }
-	if (!location && !help) {
+	if (!location && !help && !stops) {
         json= {
 			recipient: {id:sender},
 			message: messageData,
@@ -199,37 +199,37 @@ function sendTextMessage(sender, text, location, help, stops) {
 		}
     }
     else if (stops) {
-        messageData.text = "options"
-        // var elements = [];
-        messageData.quick_replies = []
+        // messageData.text = "options"
+        var elements = [];
+        // messageData.quick_replies = []
         console.log(text)
         for (var i=0; i < text.length; i++) {
-            messageData.quick_replies.push({
-                content_type: "text",
-                title: text[i].name+" "+text[i].distance,
-                payload: "<POSTBACK_PAYLOAD>"
+            elements.push({
+                // content_type: "text",
+                // title: text[i].name+" "+text[i].distance,
+                // payload: "<POSTBACK_PAYLOAD>"
                 // payload: "Stop " + text[i].name
-                // title: text[i].name+" "+text[i].distance
-                // buttons: [
-                //     {
-                //         title: "Stop "+ text[i].name,
+                title: text[i].name+" "+text[i].distance,
+                buttons: [
+                    {
+                        title: "Stop "+ text[i].name,
 
-                //     }
-                // ]
+                    }
+                ]
             })
         }
       
-        // messageData = {
-        //     text: "test",
-        //     attachement : {
-        //         type: "template",
-        //         payload: {
-        //             template_type: "list",
-        //             top_element_style: "compact",
-        //             elements: elements
-        //         }
-        //     }
-        // }
+        messageData = {
+            text: "test",
+            attachement : {
+                type: "template",
+                payload: {
+                    template_type: "list",
+                    top_element_style: "compact",
+                    elements: elements
+                }
+            }
+        }
         json= {
 			recipient: {id:sender},
 			message: messageData,
