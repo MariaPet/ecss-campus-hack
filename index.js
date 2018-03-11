@@ -203,24 +203,28 @@ function sendTextMessage(sender, text, location, help, stops) {
                 title: text[i].name+" "+text[i].distance,
                 buttons: [
                     {
-                        title: "Stop "+ text[i].name
+                        title: "Stop "+ text[i].name,
+
                     }
                 ]
             })
         }
       
-        messageData.attachement = {
-            type: "template",
-            payload: {
-                template_type: "list",
-                top_element_style: "compact",
-                elements: elements
+        messageData = {
+            attachement : {
+                type: "template",
+                payload: {
+                    template_type: "list",
+                    top_element_style: "compact",
+                    elements: elements
+                }
             }
         }
         json= {
 			recipient: {id:sender},
 			message: messageData,
-		}
+        }
+        console.log(json)
     }
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
