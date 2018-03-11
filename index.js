@@ -78,7 +78,7 @@ app.post('/webhook', (req, res) => {
                         }
                         
                         for (var i=0; i < body.length; i++) {
-    
+                            console.log("SEARCH   "+search_term)
                             if (body[i].label.toLowerCase().indexOf(search_term.replace('...','')) >= 0 ) {
                                 
                                 found = true;
@@ -224,7 +224,7 @@ function sendTextMessage(sender, text, location, help, stops) {
                     {
                         title: "Stop "+ text[i].name,
                         type: "postback",
-                        payload: "Stop "+ text[i].name
+                        payload: "Stop "+ text[i].stop_name
                     }
                 ]
             })
