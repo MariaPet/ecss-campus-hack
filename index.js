@@ -167,6 +167,7 @@ const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9
 
 function sendTextMessage(sender, text, location, help, stops) {
     console.log(location + " and " + help + " stops " +stops)
+    console.log("text: " +text)
     let messageData = { text:text }
 	if (!location && !help) {
         json= {
