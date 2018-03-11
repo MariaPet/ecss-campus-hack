@@ -72,13 +72,14 @@ app.post('/webhook', (req, res) => {
                         var results = "";
                         var found = false;
                         var search_term = text? text.replace("stop ", ""): payload.replace("stop ", "");
-                        var bus = null;
+                        var bus = "";
                         if (search_term.indexOf("bus") >= 0) {
-                            bus = search_term.split(" ").splice(-1,1);
+                            bus = search_term.split(" ");
+                            bus = bus[bus.length-1]
                         }
                         
                         for (var i=0; i < body.length; i++) {
-                            console.log("SEARCH   "+search_term)
+                            
                             if (body[i].label.toLowerCase().indexOf(search_term.replace('...','')) >= 0 ) {
                                 
                                 found = true;
@@ -88,6 +89,7 @@ app.post('/webhook', (req, res) => {
                                     var stop = JSON.parse(stop);
                                     var stop_info = "";
                                     for (var key in stop.departures) {
+                                        console.log("bus   "+bus + "    key "+key)
                                         if (bus && key !== bus) {
                                             continue;
                                         }
