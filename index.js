@@ -47,10 +47,10 @@ app.post('/webhook', (req, res) => {
                     request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
                         var body = JSON.parse(body);
                         //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-    
-                        for (var i = 0; i<6; i++){
-                            sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
-                        }  
+                        sendTextMessage(sender, body.stops[0,6], null,null, "stops");
+                        // for (var i = 0; i<6; i++){
+                        //     sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
+                        // }  
                     })
                 }
                 else if (text.indexOf("stop") === 0) {
@@ -165,7 +165,7 @@ app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('
 // const token = process.env.FB_PAGE_ACCESS_TOKEN
 const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
 
-function sendTextMessage(sender, text, location, help) {
+function sendTextMessage(sender, text, location, help, stops) {
     let messageData = { text:text }
 	if (!location && !help) {
         json= {
@@ -190,6 +190,33 @@ function sendTextMessage(sender, text, location, help) {
             });
         }
         
+        json= {
+			recipient: {id:sender},
+			message: messageData,
+		}
+    }
+    else if (stops) {
+        messageData = {}
+        var elements = [];
+        for (var i=0; i < text.length; i++) {
+            elements.push({
+                title: text[i].name+" "+text[i].distance,
+                buttons: [
+                    {
+                        title: "Stop "+ text[i].name
+                    }
+                ]
+            })
+        }
+        messageData={};
+        messageData.attachements = {
+            type: "template",
+            payload: {
+                template_type: "list",
+                top_element_style: "compact",
+                elements: elements
+            }
+        }
         json= {
 			recipient: {id:sender},
 			message: messageData,
