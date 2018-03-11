@@ -166,6 +166,7 @@ app.listen(app.get('port'), () => console.log('App is listening to ' + app.get('
 const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9GZAf8ZCMVt4kdF2svly6JlWZB93xt5dzhxwBNq9OGR7IDa5LRCqmr2c9VUST7SOKWeEVQI07A6brAFbNLy5N3pm9WFujJDZAjc6itXhuzSAZDZD"
 
 function sendTextMessage(sender, text, location, help, stops) {
+    console.log(location + " and " + help + " stops " +stops)
     let messageData = { text:text }
 	if (!location && !help) {
         json= {
