@@ -199,6 +199,7 @@ function sendTextMessage(sender, text, location, help, stops) {
     else if (stops) {
         messageData = {}
         var elements = [];
+        console.log(text)
         for (var i=0; i < text.length; i++) {
             elements.push({
                 title: text[i].name+" "+text[i].distance,
