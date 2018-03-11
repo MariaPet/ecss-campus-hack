@@ -91,7 +91,7 @@ app.post('/webhook', (req, res) => {
                                     var stop = JSON.parse(stop);
                                     var stop_info = "";
                                     for (var key in stop.departures) {
-                                        console.log("bus   "+bus + "    key "+key)
+                                        console.log("bus   "+bus + "    key "+key.toLowerCase())
                                         if (bus && key.toLowerCase() !== bus) {
                                             continue;
                                         }
