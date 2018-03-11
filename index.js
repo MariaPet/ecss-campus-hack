@@ -48,7 +48,7 @@ app.post('/webhook', (req, res) => {
                 if (text === "help") {
                     sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
                 }
-                if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
+                if (webhook_event.message && webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                     var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                     var longitude = webhook_event.message.attachments[0].payload.coordinates.long
                     var numberOfResultsReturned = 2;
