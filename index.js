@@ -221,7 +221,7 @@ function sendTextMessage(sender, text, location, help, stops) {
       
         messageData = {
             // text: "test",
-            attachement : {
+            attachment : {
                 type: "template",
                 payload: {
                     template_type: "list",
