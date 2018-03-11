@@ -92,10 +92,10 @@ app.post('/webhook', (req, res) => {
                                     var stop_info = "";
                                     for (var key in stop.departures) {
                                         console.log("bus   "+bus + "    key "+key)
-                                        if (bus && key !== bus) {
+                                        if (bus && key.toLowerCase() !== bus) {
                                             continue;
                                         }
-                                        else if (bus && key === bus) {
+                                        else if (bus && key.toLowerCase() === bus) {
                                             for (var j =0; j < stop.departures[key][0].length; j++) {
                                                 if (j >= 3) {
                                                     break;
