@@ -35,12 +35,11 @@ app.post('/webhook', (req, res) => {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
                 console.log(webhook_event);
                 if (text === "help") {
-                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location using the '+' button below.", "location")
+                    sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
                 }
                 if (webhook_event.message.attachments && webhook_event.message.attachments[0].type === "location") {
                     var latitude = webhook_event.message.attachments[0].payload.coordinates.lat
                     var longitude = webhook_event.message.attachments[0].payload.coordinates.long
-                    sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
                     var numberOfResultsReturned = 2;
     
                     
@@ -52,33 +51,6 @@ app.post('/webhook', (req, res) => {
                         for (var i = 0; i<6; i++){
                             sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
                         }  
-                        // sendTextMessage(sender, {
-                        //     "content_type": "text",
-                        //     "title": "Next",
-                        //     "payload": "Next"
-                        //   });
-    
-    
-                        if(webhook_event.message.text === "Next")
-                        {
-                            var i = 0;
-                            sendTextMessage("tEST");
-                           while(numberOfResultsReturned >= 0)
-                           {
-                            sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name + "at a distance of " + body.stops[i].distance)
-                            numberOfResultsReturned--;
-                            i++;
-                           }
-                        }
-    
-                        numberOfResultsReturned = 2;
-    
-    
-                        /*
-                        for (var i=0; i < body.stops.length; i++) {
-                            sendTextMessage(sender, "Text received, echo: " + body.stops[i].stop_name)
-                        }
-                        */
                     })
                 }
                 else if (text.indexOf("stop") === 0) {
@@ -141,7 +113,7 @@ app.post('/webhook', (req, res) => {
                         }
                         if (found === false){
                             results = "Oh-oh I could't find any bus stops with this name ";
-                            sendTextMessage(sender, "Text received, echo: " + results);
+                            sendTextMessage(sender,  results);
     
                         }
                         
