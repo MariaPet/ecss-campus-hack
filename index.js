@@ -193,7 +193,7 @@ const token = "EAAdtvblxZCVUBANwVbkL08OvpjKJx9Y4iQnfl7VUVeD7qh1u0p3AUr4wgwXEhmN9
 
 function sendTextMessage(sender, text, quickReply) {
     let messageData = { text:text }
-	if (quickReply) {
+	if (!quickReply) {
         json= {
 			recipient: {id:sender},
 			message: messageData,
@@ -202,9 +202,9 @@ function sendTextMessage(sender, text, quickReply) {
     else {
         messageData.quick_replies = []
         messageData.quick_replies.push({
-            content_type: "text",
-            title: "Stop",
-            payload: "<POSTBACK_PAYLOAD>"
+            content_type: "location"
+            // title: "Stop",
+            // payload: "<POSTBACK_PAYLOAD>"
         });
         json= {
 			recipient: {id:sender},
