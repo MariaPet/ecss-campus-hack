@@ -26,9 +26,9 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
             let sender = webhook_event.sender.id;
-            if (webhook_event.postback && webhook_event.postback.title === "Get Started"){
+            if (webhook_event.postback && webhook_event.postback.payload === "Start"){
                 console.log(webhook_event.postback.title);
-                sendTextMessage(sender,"Hello and welcome to BusSoton Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.", true)
+                sendTextMessage(sender,"Hello and welcome to SotonBus Bot! You can ask me about upcoming buses for a specific bus stop or loop-up the closest bus stops to you by sending your location. Reply with 'Help' for more instructions.", true)
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
@@ -114,7 +114,7 @@ app.post('/webhook', (req, res) => {
                                                 var operator_name = stop.departures[key][j].operator_name;
                                                 var direction = stop.departures[key][j].direction;
                                                 var line_name = stop.departures[key][j].line_name;
-                                                stop_info = ":oncoming_bus: "+ operator_name + " " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + " \n Departure time:"+ departure_time
+                                                stop_info = "🚌"+operator_name + " " + line_name + "🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
                                                 sendTextMessage(sender, stop_info);
                                             }
                                         }
@@ -123,7 +123,7 @@ app.post('/webhook', (req, res) => {
                                             var operator_name = stop.departures[key][0].operator_name;
                                             var direction = stop.departures[key][0].direction;
                                             var line_name = stop.departures[key][0].line_name;
-                                            stop_info = "🚌"+operator_name + "🚌 " + line_name + "\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
+                                            stop_info = "🚌"+operator_name + " " + line_name + "🚌\nBus stop: "  +stop.name + "\nDirection: " + direction + "\nDeparture time: "+ departure_time
                                             sendTextMessage(sender, stop_info);
 
                                         }
