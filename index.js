@@ -73,9 +73,11 @@ app.post('/webhook', (req, res) => {
                         var found = false;
                         var search_term = text? text.replace("stop ", ""): payload.replace("stop ", "");
                         var bus = "";
-                        if (search_term.indexOf("bus") >= 0) {
+                        var index_bus = search_term.indexOf("bus")
+                        if (index_bus >= 0) {
                             bus = search_term.split(" ");
                             bus = bus[bus.length-1]
+                            search_term = search_term.splice(0, index_bus-1)
                         }
                         
                         for (var i=0; i < body.length; i++) {
