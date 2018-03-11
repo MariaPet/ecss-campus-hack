@@ -208,8 +208,8 @@ function sendTextMessage(sender, text, location, help, stops) {
                 ]
             })
         }
-        messageData={};
-        messageData.attachements = {
+      
+        messageData.attachement = {
             type: "template",
             payload: {
                 template_type: "list",
