@@ -33,13 +33,15 @@ app.post('/webhook', (req, res) => {
             }
             else {
                 console.log(webhook_event)
+                let text ="";
+                let payload ="";
                 if (webhook_event.message) {
-                    let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():"";
-                    let payload = "";
+                    text = webhook_event.message.text?webhook_event.message.text.toLowerCase():"";
+                    payload = "";
                 }
                 else if (webhook_event.postback) {
-                    let text = "";
-                    let payload = webhook_event.postback.payload?webhook_event.postback.payload.toLowerCase():"";
+                    text = "";
+                    payload = webhook_event.postback.payload?webhook_event.postback.payload.toLowerCase():"";
                 }
                 
                 console.log(webhook_event);
