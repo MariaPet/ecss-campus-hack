@@ -33,8 +33,15 @@ app.post('/webhook', (req, res) => {
             }
             else {
                 console.log(webhook_event)
-                let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():"";
-                let payload = webhook_event.message.payload?webhook_event.message.text.toLowerCase():"";
+                if (webhook_event.message) {
+                    let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():"";
+                    let payload = "";
+                }
+                else if (webhook_event.postback) {
+                    let text = "";
+                    let payload = webhook_event.postback.payload?webhook_event.postback.payload.toLowerCase():"";
+                }
+                
                 console.log(webhook_event);
                 if (text === "help") {
                     sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
