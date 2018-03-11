@@ -32,6 +32,7 @@ app.post('/webhook', (req, res) => {
                 res.status(200).send('EVENT_RECEIVED');
             }
             else {
+                console.log(webhook_event)
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():"";
                 let payload = webhook_event.message.payload?webhook_event.message.text.toLowerCase():"";
                 console.log(webhook_event);
@@ -48,7 +49,7 @@ app.post('/webhook', (req, res) => {
                     request('https://transportapi.com/v3/uk/bus/stops/near.json?app_id=552c4d0a&app_key=cf5a10e9aafbc058e660e49323985088&lat='+ latitude+'&lon='+longitude, function (error, response, body) {
                         var body = JSON.parse(body);
                         //sendTextMessage(sender, "Text received, echo: " + latitude + ","+longitude)
-                        sendTextMessage(sender, body.stops.splice(0,3), null,null, "stops");
+                        sendTextMessage(sender, body.stops.splice(0,4), null,null, "stops");
                         // for (var i = 0; i<6; i++){
                         //     sendTextMessage(sender, body.stops[i].name+" "+body.stops[i].distance + " meters");
                         // }  
@@ -209,10 +210,10 @@ function sendTextMessage(sender, text, location, help, stops) {
                 // title: text[i].name+" "+text[i].distance,
                 // payload: "<POSTBACK_PAYLOAD>"
                 // payload: "Stop " + text[i].name
-                title: text[i].name+" "+text[i].distance,
+                title: text[i].name+" "+text[i].distance + "meters",
                 buttons: [
                     {
-                        title: text[i].name+" "+text[i].distance,
+                        title: "Stop "+ text[i].name,
                         type: "postback",
                         payload: "Stop "+ text[i].name
                     }
