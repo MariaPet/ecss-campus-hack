@@ -33,6 +33,7 @@ app.post('/webhook', (req, res) => {
             }
             else {
                 let text = webhook_event.message.text?webhook_event.message.text.toLowerCase():null;
+                let payload = webhook_event.message.payload?webhook_event.message.text.toLowerCase():null;
                 console.log(webhook_event);
                 if (text === "help") {
                     sendTextMessage(sender, "Here to help! To find the upcoming buses for a specific stop just text 'Stop' followed by the desired bus stop name e.g 'Stop Giddy Bridge'. To find the stops closest to you you can send your location.", "location")
@@ -53,7 +54,7 @@ app.post('/webhook', (req, res) => {
                         // }  
                     })
                 }
-                else if (text.indexOf("stop") === 0) {
+                else if (text.indexOf("stop") === 0 || payload.indexOf("stop") === 0) {
                     request('http://data.southampton.ac.uk/dumps/bus-info/2018-03-11/stops.json', function (error, response, body) {
                         console.log('error:', error); // Print the error if one occurred
                         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -198,12 +199,16 @@ function sendTextMessage(sender, text, location, help, stops) {
 		}
     }
     else if (stops) {
-        messageData = {}
-        var elements = [];
+        messageData.text = "options"
+        // var elements = [];
+        messageData.quick_replies = []
         console.log(text)
         for (var i=0; i < text.length; i++) {
-            elements.push({
-                title: text[i].name+" "+text[i].distance
+            messageData.quick_replies.push({
+                content_type: "text",
+                title: text[i].name+" "+text[i].distance,
+                payload: "Stop " + text[i].name
+                // title: text[i].name+" "+text[i].distance
                 // buttons: [
                 //     {
                 //         title: "Stop "+ text[i].name,
