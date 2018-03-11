@@ -77,7 +77,7 @@ app.post('/webhook', (req, res) => {
                         if (index_bus >= 0) {
                             bus = search_term.split(" ");
                             bus = bus[bus.length-1]
-                            search_term = search_term.splice(0, index_bus-1)
+                            search_term = search_term.substring(0, index_bus-1)
                         }
                         
                         for (var i=0; i < body.length; i++) {
