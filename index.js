@@ -212,8 +212,9 @@ function sendTextMessage(sender, text, location, help, stops) {
                 title: text[i].name+" "+text[i].distance,
                 buttons: [
                     {
-                        title: "Stop "+ text[i].name,
-
+                        title: text[i].name+" "+text[i].distance,
+                        type: "postback",
+                        payload: "Stop "+ text[i].name
                     }
                 ]
             })
